@@ -1,11 +1,21 @@
 # importation des librairies
 import numpy as np
 import csv
+import sys
 from matplotlib import pyplot as plt
 
-# à modifier par l’utilisateur
-lien_fichier = '/Users/oliviernachin/Desktop/poker_hands_export-3.csv'
-day_limit = 18668
+# en argument
+if len(sys.argv)==1 :
+    print ("Vous devez spécifier le chemin du fichier en argument")
+    quit()
+
+lien_fichier = sys.argv[1]
+
+barre = False
+day_limit = 0
+if len(sys.argv)==3 :
+    barre = True
+    day_limit = int(sys.argv[2])
 
 #----------------- CALCUL DU NOMBRE DE TOURNOIS ---------
 nbr_tournois = 0
@@ -38,7 +48,6 @@ nbr_mains_tpositions -= 1
 
 # calcul du nombre de mains par tournois
 nbr_mains_par_tournois = nbr_mains_tpositions / nbr_tournois
-print(nbr_mains_par_tournois)
 
 courbe_cEV_tpositions = np.zeros(nbr_mains_tpositions)
 courbe_cEV_espere_tpositions = np.zeros(nbr_mains_tpositions)
@@ -300,9 +309,10 @@ plt.figure('toutes les positions', figsize=(13, 7))
 plt.plot(mains_tpositions,courbe_cEV_espere_tpositions,'k--',label = 'cEV espéré = ' + str(cEV_espere_tpositions))
 plt.plot(mains_tpositions,courbe_cEV_tpositions,'orange',label = 'cEV = ' + str(round(cEV_tpositions,1)))
 
-abcisse_barre_tpositions = np.array([main_limite_tpositions,main_limite_tpositions])
-ordonnee_barre_tpositions = np.array([0,np.max(courbe_cEV_tpositions)])
-plt.plot(abcisse_barre_tpositions,ordonnee_barre_tpositions,'k')
+if barre :
+    abcisse_barre_tpositions = np.array([main_limite_tpositions,main_limite_tpositions])
+    ordonnee_barre_tpositions = np.array([0,np.max(courbe_cEV_tpositions)])
+    plt.plot(abcisse_barre_tpositions,ordonnee_barre_tpositions,'k')
 
 plt.title('cEV toutes les positions')
 plt.legend()
@@ -318,9 +328,10 @@ plt.plot(mains_tw_BB,courbe_cEV_tw_BB,'g',label = 'cEV BB = ' + str(round(cEV_tw
 plt.plot(mains_tw_BTN,courbe_cEV_espere_tw_BTN,'r--',label = 'cEV espéré BTN = ' + str(cEV_espere_tw_BTN))
 plt.plot(mains_tw_BTN,courbe_cEV_tw_BTN,'r',label = 'cEV BTN = ' + str(round(cEV_tw_BTN,1)))
 
-abcisse_barre_tw = np.array([main_limite_tw,main_limite_tw])
-ordonnee_barre_tw = np.array([np.min(courbe_cEV_tw_SB),np.max(courbe_cEV_tw_BTN)])
-plt.plot(abcisse_barre_tw,ordonnee_barre_tw,'k')
+if barre :
+    abcisse_barre_tw = np.array([main_limite_tw,main_limite_tw])
+    ordonnee_barre_tw = np.array([np.min(courbe_cEV_tw_SB),np.max(courbe_cEV_tw_BTN)])
+    plt.plot(abcisse_barre_tw,ordonnee_barre_tw,'k')
 
 plt.legend()
 
@@ -332,9 +343,10 @@ plt.plot(mains_hu_BTN,courbe_cEV_hu_BTN,'m',label = 'cEV BTN = ' + str(round(cEV
 plt.plot(mains_hu_BB,courbe_cEV_espere_hu_BB,'y--',label = 'cEV espéré BB = ' + str(cEV_espere_hu_BB))
 plt.plot(mains_hu_BB,courbe_cEV_hu_BB,'y',label = 'cEV BB = ' + str(round(cEV_hu_BB,1)))
 
-abcisse_barre_hu = np.array([main_limite_hu,main_limite_hu])
-ordonnee_barre_hu = np.array([np.min(courbe_cEV_hu_BB),np.max(courbe_cEV_hu_BTN)])
-plt.plot(abcisse_barre_hu,ordonnee_barre_hu,'k')
+if barre :
+    abcisse_barre_hu = np.array([main_limite_hu,main_limite_hu])
+    ordonnee_barre_hu = np.array([np.min(courbe_cEV_hu_BB),np.max(courbe_cEV_hu_BTN)])
+    plt.plot(abcisse_barre_hu,ordonnee_barre_hu,'k')
 
 plt.legend()
 plt.show()
