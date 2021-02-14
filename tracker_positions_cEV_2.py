@@ -189,12 +189,12 @@ pourcentage_mains_tway_BTN=nbr_mains_tway_BTN/nbr_mains_tpositions
 pourcentage_mains_HU_BB=nbr_mains_HU_BB/nbr_mains_tpositions
 pourcentage_mains_HU_BTN=nbr_mains_HU_BTN/nbr_mains_tpositions
 
-cEV_tpositions=(tab_cEV_tpositions[-1]-tab_cEV_tpositions[0])/(nbr_mains_tpositions/nbr_mains_par_tournois)
-cEV_tway_SB=(tab_cEV_tway_SB[-1]-tab_cEV_tway_SB[0])/nbr_mains_tway_SB*nbr_mains_par_tournois*pourcentage_mains_tway_SB
-cEV_tway_BB=(tab_cEV_tway_BB[-1]-tab_cEV_tway_BB[0])/nbr_mains_tway_BB*nbr_mains_par_tournois*pourcentage_mains_tway_BB
-cEV_tway_BTN=(tab_cEV_tway_BTN[-1]-tab_cEV_tway_BTN[0])/nbr_mains_tway_BTN*nbr_mains_par_tournois*pourcentage_mains_tway_BTN
-cEV_HU_BB=(tab_cEV_HU_BB[-1]-tab_cEV_HU_BB[0])/nbr_mains_HU_BB*nbr_mains_par_tournois*pourcentage_mains_HU_BB
-cEV_HU_BTN=(tab_cEV_HU_BTN[-1]-tab_cEV_HU_BTN[0])/nbr_mains_HU_BTN*nbr_mains_par_tournois*pourcentage_mains_HU_BTN
+cEV_tpositions=(tab_cEV_tpositions[-1]-tab_cEV_tpositions[0])/nbr_tournois
+cEV_tway_SB=(tab_cEV_tway_SB[-1]-tab_cEV_tway_SB[0])/nbr_tournois
+cEV_tway_BB=(tab_cEV_tway_BB[-1]-tab_cEV_tway_BB[0])/nbr_tournois
+cEV_tway_BTN=(tab_cEV_tway_BTN[-1]-tab_cEV_tway_BTN[0])/nbr_tournois
+cEV_HU_BB=(tab_cEV_HU_BB[-1]-tab_cEV_HU_BB[0])/nbr_tournois
+cEV_HU_BTN=(tab_cEV_HU_BTN[-1]-tab_cEV_HU_BTN[0])/nbr_tournois
 
 # création des tableaux de cEV espérés
 tab_cEV_esp_tpositions=np.zeros(nbr_mains_tpositions)
@@ -239,11 +239,6 @@ for i in range(nbr_mains_HU_BTN) :
         tab_cEV_esp_HU_BTN[0]=cEV_esp_HU_BTN/nbr_mains_par_tournois/pourcentage_mains_HU_BTN
     else :
         tab_cEV_esp_HU_BTN[i]=tab_cEV_esp_HU_BTN[i-1]+cEV_esp_HU_BTN/nbr_mains_par_tournois/pourcentage_mains_HU_BTN
-
-# tracé barre
-
-
-
 
 # tracé des courbes
 plt.figure('Toutes les positions', figsize=(13, 7))
