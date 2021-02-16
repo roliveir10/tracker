@@ -1,0 +1,14 @@
+prefix=/Users/oliviernachin/Documents/poker/tracker/SDL_text/freetype_build
+exec_prefix=/Users/oliviernachin/Documents/poker/tracker/SDL_text/freetype_build
+libdir=/Users/oliviernachin/Documents/poker/tracker/SDL_text/freetype_build/lib
+includedir=/Users/oliviernachin/Documents/poker/tracker/SDL_text/freetype_build/include
+
+Name: FreeType 2
+URL: http://freetype.org
+Description: A free, high-quality, and portable font engine.
+Version: 20.0.14
+Requires:
+Requires.private: 
+Libs: -L${libdir} -lfreetype
+Libs.private: -lz -lbz2 -L/opt/X11/lib -lpng16 -lz
+Cflags: -I${includedir}/freetype2

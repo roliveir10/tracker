@@ -37,6 +37,8 @@ def coefmultiplicateur (level) :
         return 8/10
     elif level==7 :
         return 10/12
+    elif level==39 :
+        return 12/16
     else :
         print('niveau de blindes inconnu')
         quit()
@@ -50,7 +52,7 @@ def stackVilain (main) :
     elif int(main[1])==4 : nbr_total_blindes=25
     elif int(main[1])==5 : nbr_total_blindes=18.75
     elif int(main[1])==6 or int(main[1])==64 or int(main[1])==38 : nbr_total_blindes=15
-    elif int(main[1])==7 : nbr_total_blindes=12.5
+    elif int(main[1])==7 or int(main[1])==39 : nbr_total_blindes=12.5
     else : 
         print('niveau de blindes inconnu')
         quit()
@@ -208,7 +210,7 @@ def domination (main) :
             return('EQ')
         else :
             return('VD')
-    elif int(main[1])==7 :
+    elif int(main[1])==7 or int(main[1])==39 :
         if main[-1] > 6.75 :
             return('HD')
         elif main[-1] <= 6.75 and main[-1] >= 5.75 :

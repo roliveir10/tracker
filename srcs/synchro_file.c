@@ -21,7 +21,7 @@ void			print_file(void)
 	t_file		*tmp = NULL;
 	int		id;
 
-	if ((dir = opendir("/Users/robinoliveira/Documents/Winamax Poker/accounts/malicious_/history/")) != NULL)
+	if ((dir = opendir("/Users/oliviernachin/Documents/Winamax Poker/")) != NULL)
 	{
 		while ((ent = readdir(dir)) != NULL)
 		{

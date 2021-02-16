@@ -10,7 +10,6 @@ void			delenv(t_sdl *sdl)
 		SDL_DestroyRenderer(sdl->renderer);
 	if (sdl->window)
 		SDL_DestroyWindow(sdl->window);
-	while (1);
 	SDL_Quit();
 	exit(1);
 }
@@ -69,7 +68,6 @@ int			main(void)
 	if (!ret)
 		return (1);
 	print_file();
-	return (0);
 	runTracker(&env);
 	delenv(&env.sdl);
 	return (0);
