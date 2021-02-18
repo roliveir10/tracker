@@ -21,59 +21,82 @@ static int		findIndexMin(int *tabT, int length, int start)
 	return (index);
 }
 
-void			sortFile(t_file **file)
+static int		totalFile(t_file *file)
 {
-	t_file		*tmp;
-	int		*tabTournamentId;
+	int		totalF = 0;
+
+	while (file)
+	{
+		totalF++;
+		file = file->next;
+	}
+	return (totalF);
+}
+static void		convertLstToTab(t_file *file, int **tableName, char ***name)
+{
+	int		*tmpTableName = *tableName;
+	char		**tmpName = *name;
+
+	while (file)
+	{
+		**tableName = file->tableName;
+		**name = file->name;
+		file = file->next;
+		*tableName += 1;
+		*name += 1;
+	}
+	*tableName = tmpTableName;
+	*name = tmpName;
+}
+
+static void		convertTabToLst(t_file **file, int *tabTableName, char **tabName)
+{
+	t_file		*tmp = *file;
+	int		i = 0;
+
+	while (*file)
+	{
+		(*file)->name = tabName[i];
+		(*file)->tableName = tabTableName[i];
+		*file = (*file)->next;
+		i++;
+	}
+	*file = tmp;
+}
+
+int			sortFile(t_file **file)
+{
+	int		*tabTableName;
 	char		**tabName;
-	int		totalT;
-	int		i;
+	int		totalF = 0;
+	int		i = 0;
 	int		min;
 	int		swapInt;
 	char		*swapName;
 
-	totalT = 0;
-	i = 0;
-	tmp = *file;
-	while (*file)
-	{
-		totalT++;
-		*file = (*file)->next;
-	}
-	*file = tmp;
+	totalF = totalFile(*file);
+	if (totalF == 0)
+		return (totalF);
+	tabTableName = (int*)malloc(sizeof(int) * totalF);
+	tabName = (char**)malloc(sizeof(char*) * totalF);
 
-	tabTournamentId = (int*)malloc(sizeof(int) * totalT);
-	tabName = (char**)malloc(sizeof(char*) * totalT);
+	convertLstToTab(*file, &tabTableName, &tabName);
 
-	while (*file)
+	while (i < totalF)
 	{
-		tabTournamentId[i] = (*file)->tournamentId;
-		tabName[i] = (*file)->name;
-		*file = (*file)->next;
-		i++;
-	}
-	*file = tmp;
-	i = 0;
-	while (i < totalT)
-	{
-		min = findIndexMin(tabTournamentId, totalT, i);
-		swapInt = tabTournamentId[i];
+		min = findIndexMin(tabTableName, totalF, i);
+		swapInt = tabTableName[i];
 		swapName = tabName[i];
-		tabTournamentId[i] = tabTournamentId[min];
+		tabTableName[i] = tabTableName[min];
 		tabName[i] = tabName[min];
-		tabTournamentId[min] = swapInt;
+		tabTableName[min] = swapInt;
 		tabName[min] = swapName;
 		i++;
 	}
-	i = 0;
-	while (*file)
-	{
-		(*file)->name = tabName[i];
-		(*file)->tournamentId = tabTournamentId[i];
-		*file = (*file)->next;
-		i++;
-	}
-	*file = tmp;
-	free(tabTournamentId);
+
+	convertTabToLst(file, tabTableName, tabName);
+
+	free(tabTableName);
 	free(tabName);
+	return (totalF);
 }

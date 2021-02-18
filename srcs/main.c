@@ -2,7 +2,15 @@
 #include <strings.h>
 #include "tracker.h"
 
-void			delenv(t_sdl *sdl)
+static void		freeGames(t_game **game)
+{
+	if (!*game)
+		return;
+	freeGames(&(*game)->next);
+	free(*game);
+}
+
+void			freeSdl(t_sdl *sdl)
 {
 	if (sdl->texture)
 		SDL_DestroyTexture(sdl->texture);
@@ -10,7 +18,6 @@ void			delenv(t_sdl *sdl)
 		SDL_DestroyRenderer(sdl->renderer);
 	if (sdl->window)
 		SDL_DestroyWindow(sdl->window);
-	while (1);
 	SDL_Quit();
 	exit(1);
 }
@@ -23,7 +30,7 @@ static int		initLib(t_sdl *sdl)
 		return (0);
 	}
 	if (!(sdl->window = SDL_CreateWindow(WIN_TITLE, SDL_WINDOWPOS_CENTERED,
-			SDL_WINDOWPOS_CENTERED, 1200, 900, 0)))
+			SDL_WINDOWPOS_CENTERED, 1000, 600, 0)))
 	{
 		dprintf(2, "SDL_CreateWindow failed. Aborting...\n");
 		return (0);
@@ -37,7 +44,7 @@ static int		initLib(t_sdl *sdl)
 		return (0);
 	}
 	if (!(sdl->texture = SDL_CreateTexture(sdl->renderer,
-			SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
+			SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
 			sdl->w, sdl->h)))
 	{
 		dprintf(2, "SDL_CreateTexture failed. Aborting...\n");
@@ -48,7 +55,12 @@ static int		initLib(t_sdl *sdl)
 		dprintf(2, "TTF_Init failed. Aborting...\n");
 		return (0);
 	}
-	if (!(sdl->arial_black_20 = TTF_OpenFont("/Library/Fonts/Arial Unicode.ttf", 20)))
+	if (!(sdl->arial_black_14 = TTF_OpenFont("/Library/Fonts/Arial Unicode.ttf", 14)))
+	{
+		dprintf(2, "Invalid font. Aborting...\n");
+		return (0);
+	}
+	if (!(sdl->arial_black_10 = TTF_OpenFont("/Library/Fonts/Arial Unicode.ttf", 10)))
 	{
 		dprintf(2, "Invalid font. Aborting...\n");
 		return (0);
@@ -56,21 +68,36 @@ static int		initLib(t_sdl *sdl)
 	return (1);
 }
 
+static int		initInterface(t_env *env)
+{
+	SDL_SetRenderTarget(env->sdl.renderer, env->sdl.texture);
+	SDL_SetRenderDrawColor(env->sdl.renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+	SDL_RenderClear(env->sdl.renderer);
+
+	SDL_SetRenderDrawColor(env->sdl.renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+	SDL_RenderDrawLine(env->sdl.renderer, 200, 0, 200, 600);
+	SDL_RenderDrawLine(env->sdl.renderer, 200, 100, 1000, 100);
+	initSyncButton(env);
+	SDL_RenderFillRect(env->sdl.renderer, &env->btn[SYNC].rect);
+	SDL_SetRenderTarget(env->sdl.renderer, NULL);
+	return (1);
+}
+
 int			main(void)
 {
 	t_env		env;
 	int		ret;
-
+	
 	bzero(&env, sizeof(t_env));
 	ret = initLib(&env.sdl);
 	if (!ret)
 		return (1);
+	ret = initInterface(&env);
 	ret = draw(&env);
 	if (!ret)
 		return (1);
-	print_file();
-	return (0);
 	runTracker(&env);
-	delenv(&env.sdl);
+	freeGames(&env.game);
+	freeSdl(&env.sdl);
 	return (0);
 }

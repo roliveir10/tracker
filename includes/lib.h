@@ -26,7 +26,8 @@ typedef struct			s_sdl
 	unsigned int		wId;
 	SDL_Renderer		*renderer;
 	SDL_Texture		*texture;
-	TTF_Font		*arial_black_20;
+	TTF_Font		*arial_black_14;
+	TTF_Font		*arial_black_10;
 	unsigned int		*image;
 }				t_sdl;
 

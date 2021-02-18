@@ -16,7 +16,7 @@ TTF_DIR		=		SDL_text
 TTF_BUILD	=		SDL_text/ttf_build/lib
 INC_TTF		=		SDL_text/ttf_build/include/SDL2
 
-CC			=		gcc -O2
+CC		=		gcc #-fsanitize=address
 CPPFLAGS	=		-Ilibft/includes -I$(INC_DIR) -I$(INC_TTF)
 CFLAGS		=		-Wall -Werror -Wextra $(shell ./SDL2/bin/sdl2-config --cflags)
 LDFLAGS		=		-L$(TTF_BUILD) $(shell ./$(SDL_DIR)/bin/sdl2-config --libs) -lSDL2_ttf
@@ -34,7 +34,10 @@ keyHandler.c					\
 loop.c						\
 draw.c						\
 synchro_file.c					\
-sort.c
+sort.c						\
+libft.c						\
+getLine.c					\
+ui.c
 
 OBJ_DIR		=		.o
 OBJ			=		$(SRC:.c=.o)
